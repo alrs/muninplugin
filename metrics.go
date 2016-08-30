@@ -25,7 +25,7 @@ func (ms Metrics) Output() string {
 			switch kind {
 			case "float32":
 				result = append(result,
-					fmt.Sprintf("%s%s: %12.2f\n", k, muninTag, value.Float()))
+					fmt.Sprintf("%s%s: %.2f\n", k, muninTag, value.Float()))
 			case "string":
 				if value.String() != "" {
 					result = append(result,

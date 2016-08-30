@@ -91,6 +91,8 @@ func NewConfig() *Config {
 	c.Graph = true
 	c.GraphScale = false
 	c.Update = true
+	c.GraphWidth = 400
+	c.GraphHeight = 180
 	return c
 }
 

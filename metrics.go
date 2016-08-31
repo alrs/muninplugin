@@ -12,10 +12,19 @@ func NewMetrics() Metrics {
 	return make(Metrics)
 }
 
-func (ms Metrics) Output() string {
+func (ms Metrics) Values() string {
 	var result []string
 	for k, v := range ms {
-		val := reflect.ValueOf(*v)
+		result = append(result, fmt.Sprintf("%s.value: %.2f\n", k, v.Val))
+	}
+	return strings.Join(result, "")
+}
+
+func (ms Metrics) Config() string {
+	var result []string
+	for k, v := range ms {
+		//		val := reflect.ValueOf(*v)
+		val := reflect.ValueOf(*v.Def)
 		for i := 0; i < val.NumField(); i++ {
 			value := val.Field(i)
 			kind := value.Kind().String()

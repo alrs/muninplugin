@@ -4,14 +4,9 @@ import (
 	"testing"
 )
 
-func TestNewConfig(t *testing.T) {
-	c := NewConfig()
-	c.Graph = true
-	t.Log(c)
-}
-
 func TestNewPlugin(t *testing.T) {
 	p := NewPlugin()
+	p.Graph = true
 	t.Log(p)
 }
 
@@ -23,25 +18,30 @@ func TestNewMetric(t *testing.T) {
 func TestNewMetrics(t *testing.T) {
 	m := NewMetrics()
 	m["test"] = NewMetric()
-	m["test"].Graph = false
+	m["test"].Def.Graph = false
 	t.Log(m["test"])
-	m["test"].Graph = true
+	m["test"].Def.Graph = true
 	t.Log(m["test"])
 }
 
+func TestNewMetricDefinition(t *testing.T) {
+	m := NewMetricDefinition()
+	t.Log(m)
+}
+
 func TestPrintConfig(t *testing.T) {
-	c := NewConfig()
-	c.GraphTitle = "Test Title"
-	c.GraphHeight = 600
-	c.GraphWidth = 800
-	c.GraphVLabel = "Vertical"
-	c.GraphCategory = "Filesystem"
-	t.Log(c.Output())
+	p := NewPlugin()
+	p.GraphTitle = "Test Title"
+	p.GraphHeight = 600
+	p.GraphWidth = 800
+	p.GraphVLabel = "Vertical"
+	p.GraphCategory = "Filesystem"
+	t.Log(p.ConfigOutput())
 }
 
 func TestMetricsOutput(t *testing.T) {
 	m := NewMetrics()
 	m["test"] = NewMetric()
-	m["test"].Graph = false
-	t.Log(m.Output())
+	m["test"].Def.Graph = false
+	t.Log(m.Config())
 }

@@ -18,7 +18,14 @@ func NewMetrics() Metrics {
 func (ms Metrics) Values() string {
 	var result []string
 	for k, v := range ms {
-		result = append(result, fmt.Sprintf("%s.value %.2f\n", k, v.Val))
+		switch sw := v.Val.(type) {
+		case float32, float64:
+			result = append(result, fmt.Sprintf("%s.value %.2f\n", k, sw))
+		case int8, uint8, int32, uint32, int64, uint64, int, uint:
+			result = append(result, fmt.Sprintf("%s.value %d\n", k, sw))
+		default:
+			panic(fmt.Sprintf("%v is not an int or a float.", sw))
+		}
 	}
 	return strings.Join(result, "")
 }

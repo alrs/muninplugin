@@ -11,11 +11,9 @@ type MetricDefinition struct {
 	// Custom specification of colour for drawing curve.
 	Colour string `munin:".colour"`
 
-	// 	Can be a max value or a range separated by colon.
-	// E.g. “min:”, ”:max”, “min:max”, “max”. Used by munin-limits
-	// to submit an error code indicating critical state if the value
-	// fetched is outside the given range.
-	Critical float32 `munin:".critical"`
+	// Used by munin-limits to submit an error code indicating
+	// critical state if the value fetched is above the maximum.
+	Critical interface{} `munin:".critical"`
 
 	// Determines how the data points are displayed in the graph.
 	// The “LINE” takes an optional width suffix, commonly “LINE1”,
@@ -43,11 +41,11 @@ type MetricDefinition struct {
 
 	// Sets a maximum value. If the fetched value is above “max”,
 	// it will be discarded.
-	Max float32 `munin:".max"`
+	Max interface{} `munin:".max"`
 
 	// Sets a minimum value. If the fetched value is below “min”,
 	// it will be discarded.
-	Min float32 `munin:".min"`
+	Min interface{} `munin:".min"`
 
 	// You need this for a “mirrored” graph. Values of the named
 	// field will be drawn below the X-axis then (e.g. plugin if_
@@ -67,16 +65,10 @@ type MetricDefinition struct {
 	// for {fieldname.value}.
 	Type string `munin:".type"`
 
-	// Can be a max value or a range separated by colon. E.g. “min:”,
-	// ”:max”, “min:max”, “max”. Used by munin-limits to submit an
+	// Used by munin-limits to submit an
 	// error code indicating warning state if the value fetched is
-	// outside the given range.
-	Warning float32 `munin:".warning"`
-
-	// integer, decimal numbers, or “U” (may be signed). For DERIVE
-	// and COUNTER values this must be an integer. See rrdcreate for
-	// restrictions.
-	// Value float32 `munin:".value"`
+	// higher than the given number.
+	Warning interface{} `munin:".warning"`
 }
 
 // NewMetricDefinition returns a pointer to a newly initialized

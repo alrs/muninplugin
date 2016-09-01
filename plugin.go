@@ -36,9 +36,8 @@ type Plugin struct {
 	GraphOrder []string `munin:"graph_order"`
 
 	// Controls the time unit munin (actually rrd) uses to calculate
-	// the average rates of change. Changing the default “second” to
-	// “minute” or “hour” is useful in cases of a low frequency of
-	// whatever the plugin is measuring.
+	// the average rates of change. This library only supports time
+	// in seconds.
 	GraphPeriod int `munin:"graph_period"`
 
 	// Controls the format munin (actually rrd) uses to display data
@@ -82,7 +81,7 @@ type Plugin struct {
 	// Sets the update_rate used by the Munin master when it creates
 	// the RRD file. The update rate is the interval at which the RRD
 	// file expects to have data.
-	// FIXME: Doesn't exist in older versions of Munin?
+	// FIXME: Doesn't exist in older versions of Munin.
 	// UpdateRate int `munin:"update_rate"`
 }
 

@@ -36,7 +36,7 @@ func TestPrintConfig(t *testing.T) {
 	p.GraphWidth = 800
 	p.GraphVLabel = "Vertical"
 	p.GraphCategory = "Filesystem"
-	t.Log(p.ConfigOutput())
+	t.Log(p.Config())
 }
 
 func TestMetricsOutput(t *testing.T) {

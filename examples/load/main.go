@@ -40,7 +40,7 @@ func main() {
 	p.Metrics["load"].Def.Max = 500.00
 
 	if len(os.Args) > 1 && os.Args[1] == "config" {
-		fmt.Println(p.ConfigOutput())
+		fmt.Println(p.Config())
 		os.Exit(0)
 	}
 

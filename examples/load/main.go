@@ -34,6 +34,7 @@ func main() {
 	}
 
 	p.Metrics["load"].Val = systemLoad
+	p.Metrics["load"].Def.Warning = 24.99
 	p.Metrics["load"].Def.Critical = 25.0
 	p.Metrics["load"].Def.Min = 0.0
 	p.Metrics["load"].Def.Max = 500.00

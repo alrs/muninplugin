@@ -113,13 +113,13 @@ func (p *Plugin) ConfigOutput() string {
 		case "string":
 			if value.String() != "" {
 				result = append(result,
-					fmt.Sprintf("%s: %s\n", muninTag, value.String()))
+					fmt.Sprintf("%s %s\n", muninTag, value.String()))
 			}
 		case "int":
 			result = append(result,
-				fmt.Sprintf("%s: %d\n", muninTag, value.Int()))
+				fmt.Sprintf("%s %d\n", muninTag, value.Int()))
 		case "bool":
-			result = append(result, fmt.Sprintf("%s: %s\n", muninTag, toYN(value.Bool())))
+			result = append(result, fmt.Sprintf("%s %s\n", muninTag, toYN(value.Bool())))
 		}
 	}
 

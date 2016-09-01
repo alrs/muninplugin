@@ -15,7 +15,7 @@ func NewMetrics() Metrics {
 func (ms Metrics) Values() string {
 	var result []string
 	for k, v := range ms {
-		result = append(result, fmt.Sprintf("%s.value: %.2f\n", k, v.Val))
+		result = append(result, fmt.Sprintf("%s.value %.2f\n", k, v.Val))
 	}
 	return strings.Join(result, "")
 }
@@ -34,17 +34,17 @@ func (ms Metrics) Config() string {
 			switch kind {
 			case "float32":
 				result = append(result,
-					fmt.Sprintf("%s%s: %.2f\n", k, muninTag, value.Float()))
+					fmt.Sprintf("%s%s %.2f\n", k, muninTag, value.Float()))
 			case "string":
 				if value.String() != "" {
 					result = append(result,
-						fmt.Sprintf("%s%s: %s\n", k, muninTag, value.String()))
+						fmt.Sprintf("%s%s %s\n", k, muninTag, value.String()))
 				}
 			case "int":
 				result = append(result,
-					fmt.Sprintf("%s%s: %d\n", k, muninTag, value.Int()))
+					fmt.Sprintf("%s%s %d\n", k, muninTag, value.Int()))
 			case "bool":
-				result = append(result, fmt.Sprintf("%s%s: %s\n", k, muninTag, toYN(value.Bool())))
+				result = append(result, fmt.Sprintf("%s%s %s\n", k, muninTag, toYN(value.Bool())))
 			}
 		}
 	}

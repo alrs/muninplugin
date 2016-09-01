@@ -106,21 +106,21 @@ func (p *Plugin) Config() string {
 	val := reflect.ValueOf(*p)
 	for i := 0; i < val.NumField(); i++ {
 		value := val.Field(i)
-		kind := value.Kind().String()
+		kind := value.Kind()
 		fieldType := val.Type().Field(i)
 		tags := fieldType.Tag
 		muninTag := tags.Get("munin")
 		switch kind {
 		//FIXME: need to handle the graphOrder slice
-		case "string":
+		case reflect.String:
 			if value.String() != "" {
 				result = append(result,
 					fmt.Sprintf("%s %s\n", muninTag, value.String()))
 			}
-		case "int":
+		case reflect.Int:
 			result = append(result,
 				fmt.Sprintf("%s %d\n", muninTag, value.Int()))
-		case "bool":
+		case reflect.Bool:
 			result = append(result, fmt.Sprintf("%s %s\n", muninTag, toYN(value.Bool())))
 		}
 	}

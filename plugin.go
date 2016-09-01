@@ -100,6 +100,8 @@ func NewPlugin() *Plugin {
 	return p
 }
 
+// ConfigOutput returns global configuration options for the plugin
+// that are collected by the Munin server on its first run.
 func (p *Plugin) ConfigOutput() string {
 	var result []string
 	val := reflect.ValueOf(*p)

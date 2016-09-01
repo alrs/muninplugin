@@ -8,10 +8,13 @@ import (
 
 type Metrics map[string]*Metric
 
+// NewMetrics returns a non-nil Metrics
 func NewMetrics() Metrics {
 	return make(Metrics)
 }
 
+// Values returns the output for use by a regular Munin data
+// collection run.
 func (ms Metrics) Values() string {
 	var result []string
 	for k, v := range ms {
@@ -20,10 +23,14 @@ func (ms Metrics) Values() string {
 	return strings.Join(result, "")
 }
 
+// Config returns the output for use by an inital Munin run
+// to collect configuration data used by subsequent value runs.
 func (ms Metrics) Config() string {
 	var result []string
 	for k, v := range ms {
+		// The load label is the string used as a key in the Metrics map.
 		result = append(result, fmt.Sprintf("%s.label %s\n", k, k))
+
 		val := reflect.ValueOf(*v.Def)
 		for i := 0; i < val.NumField(); i++ {
 			value := val.Field(i)

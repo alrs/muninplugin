@@ -79,6 +79,8 @@ type MetricDefinition struct {
 	// Value float32 `munin:".value"`
 }
 
+// NewMetricDefinition returns a pointer to a newly initialized
+// MetricDefinition, with the Graph member set to true.
 func NewMetricDefinition() *MetricDefinition {
 	return &MetricDefinition{
 		Graph: true,

@@ -33,7 +33,8 @@ type Plugin struct {
 	// Ensures that the listed fields are displayed in specified order.
 	// Any additional fields are added in the order of appearance after
 	// fields appearing on this list.
-	GraphOrder []string `munin:"graph_order"`
+	// FIXME Disabled
+	// GraphOrder []string `munin:"graph_order"`
 
 	// Controls the time unit munin (actually rrd) uses to calculate
 	// the average rates of change. This library only supports time

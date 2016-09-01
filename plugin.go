@@ -82,7 +82,8 @@ type Plugin struct {
 	// Sets the update_rate used by the Munin master when it creates
 	// the RRD file. The update rate is the interval at which the RRD
 	// file expects to have data.
-	UpdateRate int `munin:"update_rate"`
+	// FIXME: Doesn't exist in older versions of Munin?
+	// UpdateRate int `munin:"update_rate"`
 }
 
 // NewPlugin instantiates a new Plugin struct, and sets some options

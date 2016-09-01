@@ -23,7 +23,7 @@ func (ms Metrics) Values() string {
 func (ms Metrics) Config() string {
 	var result []string
 	for k, v := range ms {
-		//		val := reflect.ValueOf(*v)
+		result = append(result, fmt.Sprintf("%s.label %s\n", k, k))
 		val := reflect.ValueOf(*v.Def)
 		for i := 0; i < val.NumField(); i++ {
 			value := val.Field(i)

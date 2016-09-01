@@ -37,9 +37,6 @@ type MetricDefinition struct {
 	// page of the graph.
 	Info string `munin:".info"`
 
-	// The label used in the legend for the graph on the HTML page.
-	Label string `munin:".label"`
-
 	// Adds a horizontal line with the fieldname’s colour (HRULE) at
 	// the value defined. Will not show if outside the graph’s scale.
 	Line string `munin:".line"`

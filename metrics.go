@@ -41,24 +41,34 @@ func (ms Metrics) Config() string {
 		val := reflect.ValueOf(*v.Def)
 		for i := 0; i < val.NumField(); i++ {
 			value := val.Field(i)
-			kind := value.Kind().String()
+			kind := value.Kind()
 			fieldType := val.Type().Field(i)
 			tags := fieldType.Tag
 			muninTag := tags.Get("munin")
 			switch kind {
-			case "float32":
+			case reflect.Float64, reflect.Float32:
 				result = append(result,
 					fmt.Sprintf("%s%s %.2f\n", k, muninTag, value.Float()))
-			case "string":
+			case reflect.String:
 				if value.String() != "" {
 					result = append(result,
 						fmt.Sprintf("%s%s %s\n", k, muninTag, value.String()))
 				}
-			case "int":
+			case reflect.Int, reflect.Int64, reflect.Int32, reflect.Int8:
 				result = append(result,
 					fmt.Sprintf("%s%s %d\n", k, muninTag, value.Int()))
-			case "bool":
+			case reflect.Bool:
 				result = append(result, fmt.Sprintf("%s%s %s\n", k, muninTag, toYN(value.Bool())))
+			case reflect.Interface:
+				switch value.Interface().(type) {
+				case int, int8, int32, int64:
+					result = append(result,
+						fmt.Sprintf("%s%s %d\n", k, muninTag, value.Interface()))
+				case float32, float64:
+					result = append(result,
+						fmt.Sprintf("%s%s %.2f\n", k, muninTag, value.Interface()))
+				}
+
 			}
 		}
 	}

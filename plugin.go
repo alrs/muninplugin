@@ -33,8 +33,7 @@ type Plugin struct {
 	// Ensures that the listed fields are displayed in specified order.
 	// Any additional fields are added in the order of appearance after
 	// fields appearing on this list.
-	// FIXME Disabled
-	// GraphOrder []string `munin:"graph_order"`
+	graphOrder []string `munin:"graph_order"`
 
 	// Controls the time unit munin (actually rrd) uses to calculate
 	// the average rates of change. This library only supports time
@@ -100,10 +99,28 @@ func NewPlugin() *Plugin {
 	return p
 }
 
+func (p *Plugin) buildGraphOrderSlice() {
+	p.graphOrder = []string{}
+	for k, _ := range p.Metrics {
+		p.graphOrder = append(p.graphOrder, k)
+	}
+}
+
 // ConfigOutput returns global configuration options for the plugin
 // that are collected by the Munin server on its first run.
 func (p *Plugin) Config() string {
 	var result []string
+
+	// Populate graphOrder slice by listing keys of Metrics in the
+	// order they were added. Add the formatted string to the result
+	// slice.
+	p.buildGraphOrderSlice()
+	result = append(result,
+		fmt.Sprintf("graph_order %s\n", strings.Join(p.graphOrder, " ")))
+
+	// Iterate through every member of the struct. Use the "munin" tag
+	// to determine the field name expected by Munin. Use reflection to
+	// add the type-dependent formatted line to the result slice.
 	val := reflect.ValueOf(*p)
 	for i := 0; i < val.NumField(); i++ {
 		value := val.Field(i)
@@ -112,7 +129,6 @@ func (p *Plugin) Config() string {
 		tags := fieldType.Tag
 		muninTag := tags.Get("munin")
 		switch kind {
-		//FIXME: need to handle the graphOrder slice
 		case reflect.String:
 			if value.String() != "" {
 				result = append(result,

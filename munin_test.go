@@ -45,3 +45,16 @@ func TestMetricsOutput(t *testing.T) {
 	m["test"].Def.Graph = false
 	t.Log(m.Config())
 }
+
+func TestNonNumberValue(t *testing.T) {
+	p := NewPlugin()
+	p.Metrics["test"] = NewMetric()
+	p.Metrics["test"].Val = "This isn't a number"
+	values := p.Metrics.Values()
+	if values != "test.value U" {
+		t.Fatalf("Set metric value to a non-number, output should have been the letter U\n%s\n",
+			values)
+	} else {
+		t.Log(values)
+	}
+}

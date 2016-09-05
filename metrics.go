@@ -24,7 +24,7 @@ func (ms Metrics) Values() string {
 		case int8, uint8, int32, uint32, int64, uint64, int, uint:
 			result = append(result, fmt.Sprintf("%s.value %d\n", k, sw))
 		default:
-			panic(fmt.Sprintf("%v is not an int or a float.", sw))
+			result = append(result, fmt.Sprintf("%s.value U", k))
 		}
 	}
 	return strings.Join(result, "")

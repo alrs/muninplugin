@@ -130,20 +130,22 @@ func TestPluginConfig(t *testing.T) {
 
 func TestMetricsConfig(t *testing.T) {
 	expectedDirectives := map[string]bool{
-		"test.label test":   false,
-		"test.critical 190": false,
-		"test.graph yes":    false,
-		"test.max 200":      false,
-		"test.min 0":        false,
-		"test.warning 120":  false,
+		"test.label test":      false,
+		"test.critical 190.00": false,
+		"test.graph yes":       false,
+		"test.max 200":         false,
+		"test.min 0":           false,
+		"test.warning 120":     false,
+		"test.info extra":      false,
 	}
 	m := NewMetrics()
 	m["test"] = NewMetric()
 	m["test"].Val = 100
 	m["test"].Def.Min = 0
 	m["test"].Def.Max = 200
-	m["test"].Def.Critical = 190
+	m["test"].Def.Critical = 190.0
 	m["test"].Def.Warning = 120
+	m["test"].Def.Info = "extra"
 	foundDirectives := strings.Split(m.Config(), "\n")
 
 	for _, d := range foundDirectives {

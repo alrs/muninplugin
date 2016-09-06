@@ -165,15 +165,37 @@ func TestMetricsConfig(t *testing.T) {
 
 }
 
-func TestNonNumberValue(t *testing.T) {
-	p := NewPlugin()
-	p.Metrics["test"] = NewMetric()
-	p.Metrics["test"].Val = "This isn't a number"
-	values := p.Metrics.Values()
-	if values != "test.value U" {
-		t.Fatalf("Set metric value to a non-number, output should have been the letter U\n%s\n",
-			values)
-	} else {
-		t.Log(values)
+func TestMetricsValues(t *testing.T) {
+	expectedDirectives := map[string]bool{
+		"float.value 3.14": true,
+		"int.value 3":      true,
+		"nonumber.value U": true,
 	}
+	m := NewMetrics()
+	m["float"] = NewMetric()
+	m["float"].Val = 3.14
+	m["int"] = NewMetric()
+	m["int"].Val = 3
+	m["nonumber"] = NewMetric()
+	m["nonumber"].Val = "this is not a number"
+
+	foundDirectives := strings.Split(m.Values(), "\n")
+
+	for _, d := range foundDirectives {
+		if len(d) > 0 {
+			if _, ok := expectedDirectives[d]; ok {
+				expectedDirectives[d] = true
+			} else {
+				t.Logf("Could not find: %s in Metrics output\n", d)
+			}
+		}
+	}
+	for dir, fnd := range expectedDirectives {
+		if fnd == true {
+			t.Logf("Found expected: %s\n", dir)
+		} else {
+			t.Fatalf("Found unexpected: %s\n", dir)
+		}
+	}
+
 }

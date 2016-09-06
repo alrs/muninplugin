@@ -101,8 +101,10 @@ func NewPlugin() *Plugin {
 
 func (p *Plugin) buildGraphOrderSlice() {
 	p.graphOrder = []string{}
-	for k, _ := range p.Metrics {
-		p.graphOrder = append(p.graphOrder, k)
+	if len(p.Metrics) > 0 {
+		for k, _ := range p.Metrics {
+			p.graphOrder = append(p.graphOrder, k)
+		}
 	}
 }
 

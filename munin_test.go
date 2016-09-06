@@ -128,9 +128,41 @@ func TestPluginConfig(t *testing.T) {
 	}
 }
 
-func TestMetricsOutput(t *testing.T) {
+func TestMetricsConfig(t *testing.T) {
+	expectedDirectives := map[string]bool{
+		"test.label test":   false,
+		"test.critical 190": false,
+		"test.graph yes":    false,
+		"test.max 200":      false,
+		"test.min 0":        false,
+		"test.warning 120":  false,
+	}
 	m := NewMetrics()
-	t.Log(m.Config())
+	m["test"] = NewMetric()
+	m["test"].Val = 100
+	m["test"].Def.Min = 0
+	m["test"].Def.Max = 200
+	m["test"].Def.Critical = 190
+	m["test"].Def.Warning = 120
+	foundDirectives := strings.Split(m.Config(), "\n")
+
+	for _, d := range foundDirectives {
+		if len(d) > 0 {
+			if _, ok := expectedDirectives[d]; ok {
+				expectedDirectives[d] = true
+			} else {
+				t.Logf("Could not find: %s in Metrics output\n", d)
+			}
+		}
+	}
+	for dir, fnd := range expectedDirectives {
+		if fnd == true {
+			t.Logf("Found expected: %s\n", dir)
+		} else {
+			t.Fatalf("Found unexpected: %s\n", dir)
+		}
+	}
+
 }
 
 func TestNonNumberValue(t *testing.T) {

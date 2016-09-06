@@ -46,17 +46,11 @@ func (ms Metrics) Config() string {
 			tags := fieldType.Tag
 			muninTag := tags.Get("munin")
 			switch kind {
-			case reflect.Float64, reflect.Float32:
-				result = append(result,
-					fmt.Sprintf("%s%s %.2f\n", k, muninTag, value.Float()))
 			case reflect.String:
 				if value.String() != "" {
 					result = append(result,
 						fmt.Sprintf("%s%s %s\n", k, muninTag, value.String()))
 				}
-			case reflect.Int, reflect.Int64, reflect.Int32, reflect.Int8:
-				result = append(result,
-					fmt.Sprintf("%s%s %d\n", k, muninTag, value.Int()))
 			case reflect.Bool:
 				result = append(result, fmt.Sprintf("%s%s %s\n", k, muninTag, toYN(value.Bool())))
 			case reflect.Interface:

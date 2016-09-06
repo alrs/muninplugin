@@ -6,27 +6,42 @@ import (
 
 func TestNewPlugin(t *testing.T) {
 	p := NewPlugin()
-	p.Graph = true
-	t.Log(p)
+	switch interface{}(p).(type) {
+	case *Plugin:
+		t.Logf("NewPlugin() created a *Plugin: %v\n", p)
+	default:
+		t.Fatalf("NewPlugin() did not create a *Plugin")
+	}
 }
 
 func TestNewMetric(t *testing.T) {
 	m := NewMetric()
-	t.Log(m)
+	switch interface{}(m).(type) {
+	case *Metric:
+		t.Logf("NewMetric() created a *Metric: %v\n", m)
+	default:
+		t.Fatalf("NewMetric() did not create a *Metric")
+	}
 }
 
 func TestNewMetrics(t *testing.T) {
 	m := NewMetrics()
-	m["test"] = NewMetric()
-	m["test"].Def.Graph = false
-	t.Log(m["test"])
-	m["test"].Def.Graph = true
-	t.Log(m["test"])
+	switch interface{}(m).(type) {
+	case Metrics:
+		t.Logf("NewMetrics() created a Metrics: %v\n", m)
+	default:
+		t.Fatalf("NewMetrics() did not create a Metrics")
+	}
 }
 
 func TestNewMetricDefinition(t *testing.T) {
-	m := NewMetricDefinition()
-	t.Log(m)
+	md := NewMetricDefinition()
+	switch interface{}(md).(type) {
+	case *MetricDefinition:
+		t.Logf("NewMetricDefinition() created a *MetricDefinition: %v\n", md)
+	default:
+		t.Fatalf("NewMetricDefinition() did not create a *MetricDefinition.")
+	}
 }
 
 func TestPrintConfig(t *testing.T) {
@@ -41,8 +56,6 @@ func TestPrintConfig(t *testing.T) {
 
 func TestMetricsOutput(t *testing.T) {
 	m := NewMetrics()
-	m["test"] = NewMetric()
-	m["test"].Def.Graph = false
 	t.Log(m.Config())
 }
 

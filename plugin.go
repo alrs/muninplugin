@@ -101,10 +101,8 @@ func NewPlugin() *Plugin {
 
 func (p *Plugin) buildGraphOrderSlice() {
 	p.graphOrder = []string{}
-	if len(p.Metrics) > 0 {
-		for k, _ := range p.Metrics {
-			p.graphOrder = append(p.graphOrder, k)
-		}
+	for k, _ := range p.Metrics {
+		p.graphOrder = append(p.graphOrder, k)
 	}
 }
 
@@ -116,9 +114,11 @@ func (p *Plugin) Config() string {
 	// Populate graphOrder slice by listing keys of Metrics in the
 	// order they were added. Add the formatted string to the result
 	// slice.
-	p.buildGraphOrderSlice()
-	result = append(result,
-		fmt.Sprintf("graph_order %s\n", strings.Join(p.graphOrder, " ")))
+	if len(p.Metrics) > 0 {
+		p.buildGraphOrderSlice()
+		result = append(result,
+			fmt.Sprintf("graph_order %s\n", strings.Join(p.graphOrder, " ")))
+	}
 
 	// Iterate through every member of the struct. Use the "munin" tag
 	// to determine the field name expected by Munin. Use reflection to

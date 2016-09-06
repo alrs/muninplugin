@@ -1,6 +1,7 @@
 package muninplugin
 
 import (
+	"strings"
 	"testing"
 )
 
@@ -87,14 +88,44 @@ func TestNewPluginDefaults(t *testing.T) {
 	}
 }
 
-func TestPrintConfig(t *testing.T) {
+func TestPluginConfig(t *testing.T) {
+	expectedDirectives := map[string]bool{
+		"graph yes":                 false,
+		"graph_category Filesystem": false,
+		"graph_height 600":          false,
+		"graph_period 0":            false,
+		"graph_scale no":            false,
+		"graph_title Test Title":    false,
+		"graph_width 800":           false,
+		"update yes":                false,
+		"graph_vlabel Vertical":     false,
+	}
+
 	p := NewPlugin()
 	p.GraphTitle = "Test Title"
 	p.GraphHeight = 600
 	p.GraphWidth = 800
 	p.GraphVLabel = "Vertical"
 	p.GraphCategory = "Filesystem"
+
+	foundDirectives := strings.Split(p.Config(), "\n")
 	t.Log(p.Config())
+	for _, d := range foundDirectives {
+		if len(d) > 0 {
+			if _, ok := expectedDirectives[d]; ok {
+				expectedDirectives[d] = true
+			} else {
+				t.Logf("Could not find: %s in Plugin Config output\n", d)
+			}
+		}
+	}
+	for dir, fnd := range expectedDirectives {
+		if fnd == true {
+			t.Logf("Found expected: %s\n", dir)
+		} else {
+			t.Fatalf("Found unexpected: %s\n", dir)
+		}
+	}
 }
 
 func TestMetricsOutput(t *testing.T) {

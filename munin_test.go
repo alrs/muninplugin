@@ -44,6 +44,14 @@ func TestNewMetricDefinition(t *testing.T) {
 	}
 }
 
+func TestNewMetricDefinitionDefaults(t *testing.T) {
+	md := NewMetricDefinition()
+	if md.Graph == true {
+		t.Log("Graph member correctly set to 'true' by default.")
+	} else {
+		t.Fatal("Graph member does not default to 'true.'")
+	}
+}
 func TestPrintConfig(t *testing.T) {
 	p := NewPlugin()
 	p.GraphTitle = "Test Title"

@@ -32,7 +32,7 @@ func (ms Metrics) Values() string {
 	return strings.Join(result, "")
 }
 
-// Config returns the output for use by an inital Munin run
+// Config returns the output for use by an initial Munin run
 // to collect configuration data used by subsequent value runs.
 func (ms Metrics) Config() string {
 	var result []string

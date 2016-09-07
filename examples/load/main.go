@@ -27,17 +27,17 @@ func main() {
 	p := muninplugin.NewPlugin()
 	p.GraphTitle = "Example Golang Load"
 
-	p.Metrics["load"] = muninplugin.NewMetric()
+	p.Metrics["load"] = &muninplugin.Metric{}
 	systemLoad, err := load()
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	p.Metrics["load"].Val = systemLoad
-	p.Metrics["load"].Def.Warning = 24.99
-	p.Metrics["load"].Def.Critical = 25.0
-	p.Metrics["load"].Def.Min = 0.0
-	p.Metrics["load"].Def.Max = 500.00
+	p.Metrics["load"].Value = systemLoad
+	p.Metrics["load"].Warning = 24.99
+	p.Metrics["load"].Critical = 25.0
+	p.Metrics["load"].Min = 0.0
+	p.Metrics["load"].Max = 500.00
 
 	if len(os.Args) > 1 && os.Args[1] == "config" {
 		fmt.Println(p.Config())

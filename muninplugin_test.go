@@ -26,31 +26,12 @@ func TestNewMetric(t *testing.T) {
 }
 
 func TestNewMetrics(t *testing.T) {
-	m := NewMetrics()
+	m := newMetrics()
 	switch interface{}(m).(type) {
 	case Metrics:
 		t.Logf("NewMetrics() created a Metrics: %v\n", m)
 	default:
 		t.Fatalf("NewMetrics() did not create a Metrics")
-	}
-}
-
-func TestNewMetricDefinition(t *testing.T) {
-	md := NewMetricDefinition()
-	switch interface{}(md).(type) {
-	case *MetricDefinition:
-		t.Logf("NewMetricDefinition() created a *MetricDefinition: %v\n", md)
-	default:
-		t.Fatalf("NewMetricDefinition() did not create a *MetricDefinition.")
-	}
-}
-
-func TestNewMetricDefinitionDefaults(t *testing.T) {
-	md := NewMetricDefinition()
-	if md.Graph == true {
-		t.Log("Graph member correctly set to 'true' by default.")
-	} else {
-		t.Fatal("Graph member does not default to 'true.'")
 	}
 }
 
@@ -138,14 +119,15 @@ func TestMetricsConfig(t *testing.T) {
 		"test.warning 120":     false,
 		"test.info extra":      false,
 	}
-	m := NewMetrics()
+	m := newMetrics()
 	m["test"] = NewMetric()
-	m["test"].Val = 100
-	m["test"].Def.Min = 0
-	m["test"].Def.Max = 200
-	m["test"].Def.Critical = 190.0
-	m["test"].Def.Warning = 120
-	m["test"].Def.Info = "extra"
+	m["test"].Value = 100
+	m["test"].Min = 0
+	m["test"].Max = 200
+	m["test"].Critical = 190.00
+	m["test"].Warning = 120
+	m["test"].Info = "extra"
+	t.Log(m.Config())
 	foundDirectives := strings.Split(m.Config(), "\n")
 
 	for _, d := range foundDirectives {
@@ -153,7 +135,7 @@ func TestMetricsConfig(t *testing.T) {
 			if _, ok := expectedDirectives[d]; ok {
 				expectedDirectives[d] = true
 			} else {
-				t.Logf("Could not find: %s in Metrics output\n", d)
+				t.Fatalf("Could not find: %s in Metrics output\n", d)
 			}
 		}
 	}
@@ -161,7 +143,7 @@ func TestMetricsConfig(t *testing.T) {
 		if fnd == true {
 			t.Logf("Found expected: %s\n", dir)
 		} else {
-			t.Fatalf("Found unexpected: %s\n", dir)
+			t.Fatalf("Not Found: %s\n", dir)
 		}
 	}
 
@@ -173,13 +155,13 @@ func TestMetricsValues(t *testing.T) {
 		"int.value 3":      true,
 		"nonumber.value U": true,
 	}
-	m := NewMetrics()
+	m := newMetrics()
 	m["float"] = NewMetric()
-	m["float"].Val = 3.14
+	m["float"].Value = 3.14
 	m["int"] = NewMetric()
-	m["int"].Val = 3
+	m["int"].Value = 3
 	m["nonumber"] = NewMetric()
-	m["nonumber"].Val = "this is not a number"
+	m["nonumber"].Value = "this is not a number"
 
 	foundDirectives := strings.Split(m.Values(), "\n")
 
@@ -188,7 +170,7 @@ func TestMetricsValues(t *testing.T) {
 			if _, ok := expectedDirectives[d]; ok {
 				expectedDirectives[d] = true
 			} else {
-				t.Logf("Could not find: %s in Metrics output\n", d)
+				t.Fatalf("Could not find: %s in Metrics output\n", d)
 			}
 		}
 	}

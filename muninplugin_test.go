@@ -74,11 +74,8 @@ func TestPluginConfig(t *testing.T) {
 		"graph yes":                 false,
 		"graph_category Filesystem": false,
 		"graph_height 600":          false,
-		"graph_period 0":            false,
-		"graph_scale no":            false,
 		"graph_title Test Title":    false,
 		"graph_width 800":           false,
-		"update yes":                false,
 		"graph_vlabel Vertical":     false,
 	}
 
@@ -104,7 +101,7 @@ func TestPluginConfig(t *testing.T) {
 		if fnd == true {
 			t.Logf("Found expected: %s\n", dir)
 		} else {
-			t.Fatalf("Found unexpected: %s\n", dir)
+			t.Fatalf("Not found: %s\n", dir)
 		}
 	}
 }
@@ -178,7 +175,7 @@ func TestMetricsValues(t *testing.T) {
 		if fnd == true {
 			t.Logf("Found expected: %s\n", dir)
 		} else {
-			t.Fatalf("Found unexpected: %s\n", dir)
+			t.Fatalf("Not Found: %s\n", dir)
 		}
 	}
 

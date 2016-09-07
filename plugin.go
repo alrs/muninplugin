@@ -17,7 +17,7 @@ type Plugin struct {
 	// Arguments for the rrd grapher.
 	// This is used to control how the generated graph looks,
 	// and how values are interpreted or presented.
-	GraphArgs string `munin:"graph_args"`
+	GraphArgs interface{} `munin:"graph_args"`
 
 	// Category used to sort the graph on the generated index web page.
 	GraphCategory string `munin:"graph_category"`
@@ -25,7 +25,7 @@ type Plugin struct {
 	// The height of the graph.
 	// Note that this is only the graph’s height and not the height of
 	// the whole PNG image.
-	GraphHeight int `munin:"graph_height"`
+	GraphHeight interface{} `munin:"graph_height"`
 
 	// Provides general information on what the graph shows.
 	GraphInfo string `munin:"graph_info"`
@@ -36,9 +36,8 @@ type Plugin struct {
 	graphOrder []string
 
 	// Controls the time unit munin (actually rrd) uses to calculate
-	// the average rates of change. This library only supports time
-	// in seconds.
-	GraphPeriod int `munin:"graph_period"`
+	// the average rates of change.
+	GraphPeriod interface{} `munin:"graph_period"`
 
 	// Controls the format munin (actually rrd) uses to display data
 	// source values in the graph legend.
@@ -47,7 +46,7 @@ type Plugin struct {
 	// Per default the unit written on the graph will be scaled.
 	// So instead of 1000 you will see 1k or 1M for 1000000.
 	// You may disable autoscale by setting this to ‘no’.
-	GraphScale bool `munin:"graph_scale"`
+	GraphScale interface{} `munin:"graph_scale"`
 
 	// Sets the title of the graph.
 	GraphTitle string `munin:"graph_title"`
@@ -63,7 +62,7 @@ type Plugin struct {
 
 	// The width of the graph. Note that this is only the graph’s
 	// width and not the width of the whole PNG image.
-	GraphWidth int `munin:"graph_width"`
+	GraphWidth interface{} `munin:"graph_width"`
 
 	// Override the host name for which the plugin is run.
 	HostName string `munin:"host_name"`
@@ -76,13 +75,12 @@ type Plugin struct {
 	MultiGraph string `munin:"multi_graph"`
 
 	// Decides whether munin-update should fetch data for the graph.
-	Update bool `munin:"update"`
+	Update interface{} `munin:"update"`
 
 	// Sets the update_rate used by the Munin master when it creates
 	// the RRD file. The update rate is the interval at which the RRD
 	// file expects to have data.
-	// FIXME: Doesn't exist in older versions of Munin.
-	// UpdateRate int `munin:"update_rate"`
+	UpdateRate interface{} `munin:"update_rate"`
 }
 
 // NewPlugin instantiates a new Plugin struct, and sets some options
@@ -131,6 +129,18 @@ func (p *Plugin) Config() string {
 		tags := fieldType.Tag
 		muninTag := tags.Get("munin")
 		switch kind {
+		case reflect.Interface:
+			switch value.Interface().(type) {
+			case int, int8, int32, int64:
+				result = append(result,
+					fmt.Sprintf("%s %d\n", muninTag, value.Interface()))
+			case float32, float64:
+				result = append(result,
+					fmt.Sprintf("%s %.2f\n", muninTag, value.Interface()))
+			case bool:
+				result = append(result,
+					fmt.Sprintf("%s %t\n", muninTag, value))
+			}
 		case reflect.String:
 			if value.String() != "" {
 				result = append(result,

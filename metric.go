@@ -1,5 +1,7 @@
 package muninplugin
 
+// Metric is a struct that holds all of the configuration data for a
+// single metric tracked in a Munin plugin.
 type Metric struct {
 	Value interface{}
 

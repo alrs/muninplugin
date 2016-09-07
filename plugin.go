@@ -98,13 +98,6 @@ func NewPlugin() *Plugin {
 	return p
 }
 
-//func (p *Plugin) buildGraphOrderSlice() {
-//	p.graphOrder = []string{}
-//	for k, _ := range p.Metrics {
-//		p.graphOrder = append(p.graphOrder, k)
-//	}
-//}
-
 // MakeMetric adds a new metric to the plugin and maintains the
 // order in which metrics were added.
 func (p *Plugin) MakeMetric(m string) {

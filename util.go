@@ -4,7 +4,6 @@ package muninplugin
 func toYN(b bool) string {
 	if b {
 		return "yes"
-	} else {
-		return "no"
 	}
+	return "no"
 }

@@ -16,7 +16,7 @@ func TestNewPlugin(t *testing.T) {
 }
 
 func TestNewMetric(t *testing.T) {
-	m := NewMetric()
+	m := newMetric()
 	switch interface{}(m).(type) {
 	case *Metric:
 		t.Logf("NewMetric() created a *Metric: %v\n", m)
@@ -53,20 +53,6 @@ func TestNewPluginDefaults(t *testing.T) {
 		t.Fatalf("Plugin Update not set true by default.")
 	}
 
-	expectedGraphWidth := 400
-	expectedGraphHeight := 180
-	if p.GraphWidth == expectedGraphWidth {
-		t.Logf("Plugin GraphWidth correctly set to %d\n", p.GraphWidth)
-	} else {
-		t.Fatalf("Plugin GraphWidth should be %d, found %d\n",
-			expectedGraphWidth, p.GraphWidth)
-	}
-	if p.GraphHeight == expectedGraphHeight {
-		t.Logf("Plugin GraphHeight correctly set to %d\n", p.GraphHeight)
-	} else {
-		t.Fatalf("Plugin GraphHeight should be %d, found %d\n",
-			expectedGraphHeight, p.GraphHeight)
-	}
 }
 
 func TestPluginConfig(t *testing.T) {
@@ -117,7 +103,7 @@ func TestMetricsConfig(t *testing.T) {
 		"test.info extra":      false,
 	}
 	m := newMetrics()
-	m["test"] = NewMetric()
+	m["test"] = newMetric()
 	m["test"].Value = 100
 	m["test"].Min = 0
 	m["test"].Max = 200
@@ -153,11 +139,11 @@ func TestMetricsValues(t *testing.T) {
 		"nonumber.value U": true,
 	}
 	m := newMetrics()
-	m["float"] = NewMetric()
+	m["float"] = newMetric()
 	m["float"].Value = 3.14
-	m["int"] = NewMetric()
+	m["int"] = newMetric()
 	m["int"].Value = 3
-	m["nonumber"] = NewMetric()
+	m["nonumber"] = newMetric()
 	m["nonumber"].Value = "this is not a number"
 
 	foundDirectives := strings.Split(m.Values(), "\n")
@@ -183,9 +169,12 @@ func TestMetricsValues(t *testing.T) {
 
 func TestBuildGraphOrderSlice(t *testing.T) {
 	p := NewPlugin()
-	p.Metrics["first"] = NewMetric()
-	p.Metrics["second"] = NewMetric()
-	p.buildGraphOrderSlice()
+	p.AddMetric("first")
+	p.AddMetric("second")
+	p.AddMetric("third")
+	p.AddMetric("fourth")
+	p.AddMetric("fifth")
+	t.Logf(p.Config())
 	if p.graphOrder[0] == "first" {
 		t.Logf("Correct graphOrder %v\n", p.graphOrder)
 	} else {

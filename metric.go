@@ -73,7 +73,7 @@ type Metric struct {
 	Warning interface{} `munin:".warning"`
 }
 
-func NewMetric() *Metric {
+func newMetric() *Metric {
 	return &Metric{
 		Graph: true,
 	}

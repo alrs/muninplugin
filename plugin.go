@@ -92,16 +92,21 @@ func NewPlugin() *Plugin {
 	p.Graph = true
 	p.GraphScale = false
 	p.Update = true
-	p.GraphWidth = 400
-	p.GraphHeight = 180
 	return p
 }
 
-func (p *Plugin) buildGraphOrderSlice() {
-	p.graphOrder = []string{}
-	for k, _ := range p.Metrics {
-		p.graphOrder = append(p.graphOrder, k)
-	}
+//func (p *Plugin) buildGraphOrderSlice() {
+//	p.graphOrder = []string{}
+//	for k, _ := range p.Metrics {
+//		p.graphOrder = append(p.graphOrder, k)
+//	}
+//}
+
+// AddMetric adds a new metric to the plugin and maintains the
+// order in which metrics were added.
+func (p *Plugin) AddMetric(m string) {
+	p.graphOrder = append(p.graphOrder, m)
+	p.Metrics[m] = newMetric()
 }
 
 // ConfigOutput returns global configuration options for the plugin
@@ -113,7 +118,6 @@ func (p *Plugin) Config() string {
 	// order they were added. Add the formatted string to the result
 	// slice.
 	if len(p.Metrics) > 0 {
-		p.buildGraphOrderSlice()
 		result = append(result,
 			fmt.Sprintf("graph_order %s\n", strings.Join(p.graphOrder, " ")))
 	}

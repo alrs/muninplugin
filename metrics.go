@@ -6,6 +6,8 @@ import (
 	"strings"
 )
 
+// Metrics is a map that stores the name of a Metric as its key, and
+// a pointer to a Metric as its value.
 type Metrics map[string]*Metric
 
 // NewMetrics returns a non-nil Metrics

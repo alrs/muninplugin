@@ -183,3 +183,15 @@ func TestMetricsValues(t *testing.T) {
 	}
 
 }
+
+func TestBuildGraphOrderSlice(t *testing.T) {
+	p := NewPlugin()
+	p.Metrics["first"] = NewMetric()
+	p.Metrics["second"] = NewMetric()
+	p.buildGraphOrderSlice()
+	if p.graphOrder[0] == "first" {
+		t.Logf("Correct graphOrder %v\n", p.graphOrder)
+	} else {
+		t.Fatalf("Incorrect graphOrder %v\n", p.graphOrder)
+	}
+}

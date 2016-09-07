@@ -75,7 +75,7 @@ type Plugin struct {
 	MultiGraph string `munin:"multi_graph"`
 
 	// Decides whether munin-update should fetch data for the graph.
-	Update interface{} `munin:"update"`
+	Update bool `munin:"update"`
 
 	// Sets the update_rate used by the Munin master when it creates
 	// the RRD file. The update rate is the interval at which the RRD
@@ -102,9 +102,9 @@ func NewPlugin() *Plugin {
 //	}
 //}
 
-// AddMetric adds a new metric to the plugin and maintains the
+// MakeMetric adds a new metric to the plugin and maintains the
 // order in which metrics were added.
-func (p *Plugin) AddMetric(m string) {
+func (p *Plugin) MakeMetric(m string) {
 	p.graphOrder = append(p.graphOrder, m)
 	p.Metrics[m] = newMetric()
 }
@@ -141,9 +141,6 @@ func (p *Plugin) Config() string {
 			case float32, float64:
 				result = append(result,
 					fmt.Sprintf("%s %.2f\n", muninTag, value.Interface()))
-			case bool:
-				result = append(result,
-					fmt.Sprintf("%s %t\n", muninTag, value))
 			}
 		case reflect.String:
 			if value.String() != "" {

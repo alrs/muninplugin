@@ -169,13 +169,13 @@ func TestMetricsValues(t *testing.T) {
 
 func TestBuildGraphOrderSlice(t *testing.T) {
 	p := NewPlugin()
-	p.AddMetric("first")
-	p.AddMetric("second")
-	p.AddMetric("third")
-	p.AddMetric("fourth")
-	p.AddMetric("fifth")
+	p.MakeMetric("first")
+	p.MakeMetric("second")
+	p.MakeMetric("third")
+	p.MakeMetric("fourth")
+	p.MakeMetric("fifth")
 	t.Logf(p.Config())
-	if p.graphOrder[0] == "first" {
+	if p.graphOrder[0] == "first" && p.graphOrder[4] == "fifth" {
 		t.Logf("Correct graphOrder %v\n", p.graphOrder)
 	} else {
 		t.Fatalf("Incorrect graphOrder %v\n", p.graphOrder)

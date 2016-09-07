@@ -89,7 +89,7 @@ type Plugin struct {
 // to reasonable default values.
 func NewPlugin() *Plugin {
 	p := &Plugin{
-		Metrics: make(Metrics),
+		Metrics: newMetrics(),
 	}
 	p.Graph = true
 	p.GraphScale = false

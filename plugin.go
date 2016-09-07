@@ -6,6 +6,9 @@ import (
 	"strings"
 )
 
+// Plugin is a struct that contains the global configuration for a Munin
+// plugin, as well as a Metrics collection that contains all of the points
+// of data tracked by the the plugin.
 type Plugin struct {
 	Metrics Metrics
 	// Field descriptions from:
@@ -109,7 +112,7 @@ func (p *Plugin) MakeMetric(m string) {
 	p.Metrics[m] = newMetric()
 }
 
-// ConfigOutput returns global configuration options for the plugin
+// Config returns global configuration options for the plugin
 // that are collected by the Munin server on its first run.
 func (p *Plugin) Config() string {
 	var result []string

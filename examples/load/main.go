@@ -27,7 +27,7 @@ func main() {
 	p := muninplugin.NewPlugin()
 	p.GraphTitle = "Example Golang Load"
 
-	p.AddMetric("load")
+	p.MakeMetric("load")
 	systemLoad, err := load()
 	if err != nil {
 		log.Fatal(err)
